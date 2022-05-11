@@ -9,6 +9,7 @@ cbsensor_stats = dict()
 MIN_UPDATE_INTERVAL = 30  # seconds
 METRIC_PREFIX = "cbsensor_"
 CB_PROCESS_NAMES = ["cbsensor", "cbdaemon", "python"]
+GANGLIA_GROUPS = "cbsensor"
 METRIC_DESCRIPTORS = {
     "cpu_percent": {
         "units": "%",
@@ -16,7 +17,7 @@ METRIC_DESCRIPTORS = {
         "slope": "both",
         "format": "%.2f",
         "description": "CPU usage in percent",
-        "groups": ["cbsensor"],
+        "groups": GANGLIA_GROUPS,
     },
     "memory_percent": {
         "units": "%",
@@ -24,15 +25,15 @@ METRIC_DESCRIPTORS = {
         "slope": "both",
         "format": "%.2f",
         "description": "Memory usage in percent",
-        "groups": ["cbsensor"],
+        "groups": GANGLIA_GROUPS,
     },
     "nproc": {
-        "units": "",
-        "value_type": "uint32",
+        "units": "processes",
+        "value_type": "uint",
         "slope": "both",
         "format": "%u",
         "description": "Number of processes",
-        "groups": ["cbsensor"],
+        "groups": GANGLIA_GROUPS,
     },
 }
 
@@ -55,7 +56,7 @@ def get_cbsensor_metrics():
     return True
 
 
-def get_cbsensor_metric(name: str):
+def get_cbsensor_metric(name):
     global cbsensor_stats
     if METRIC_PREFIX in name:
         name = name.replace(METRIC_PREFIX, "")
@@ -81,8 +82,8 @@ def metric_cleanup():
     pass
 
 
-if __name__ == '__main__':
-    metric_init({})
-    for d in descriptors:
-        v = d['call_back'](d['name'])
-        print(f"value for {d['name']} is {v}")
+# if __name__ == '__main__':
+#     metric_init({})
+#     for d in descriptors:
+#         v = d['call_back'](d['name'])
+#         print(f"value for {d['name']} is {v}")
