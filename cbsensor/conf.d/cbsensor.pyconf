@@ -1,0 +1,15 @@
+modules {
+  module {
+    name     = "ganglia_cbsensor"
+    language = "python"
+  }
+}
+
+collection_group {
+  collect_every  = 30
+  time_threshold = 60
+  metric {
+    name_match = "cbsensor_(.+)"
+    value_threshold = 0.0
+  }
+}
